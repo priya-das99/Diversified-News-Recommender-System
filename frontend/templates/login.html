@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+        window.tailwind = {
+            config: {
+                darkMode: 'class',
+                theme: {
+                    extend: {
+                        colors: {
+                            border: 'hsl(var(--border))',
+                            input: 'hsl(var(--input))',
+                            ring: 'hsl(var(--ring))',
+                            background: 'hsl(var(--background))',
+                            foreground: 'hsl(var(--foreground))',
+                            primary: {
+                                DEFAULT: 'hsl(var(--primary))',
+                                foreground: 'hsl(var(--primary-foreground))'
+                            },
+                            secondary: {
+                                DEFAULT: 'hsl(var(--secondary))',
+                                foreground: 'hsl(var(--secondary-foreground))'
+                            },
+                            destructive: {
+                                DEFAULT: 'hsl(var(--destructive))',
+                                foreground: 'hsl(var(--destructive-foreground))'
+                            },
+                            muted: {
+                                DEFAULT: 'hsl(var(--muted))',
+                                foreground: 'hsl(var(--muted-foreground))'
+                            },
+                            accent: {
+                                DEFAULT: 'hsl(var(--accent))',
+                                foreground: 'hsl(var(--accent-foreground))'
+                            },
+                            popover: {
+                                DEFAULT: 'hsl(var(--popover))',
+                                foreground: 'hsl(var(--popover-foreground))'
+                            },
+                            card: {
+                                DEFAULT: 'hsl(var(--card))',
+                                foreground: 'hsl(var(--card-foreground))'
+                            },
+                        },
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
+    <style>
+        /* Animation for sliding the button out to the right */
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        .slide-out-right {
+            animation: slideOutRight 0.5s forwards;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 font-sans leading-normal tracking-normal">
+    <div id="welcome-section" class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-500 to-pink-500">
+        <h1 class="text-white text-5xl font-bold mb-4 shadow-lg">Welcome to Halchal Express !</h1>
+        <h2 id="dynamic-subtitle" class="text-white text-3xl mb-6 shadow-md transition-opacity duration-500 ease-in-out opacity-100">Read Like Never Before</h2>
+        <button id="get-started" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-500 transition">Get Started</button>
+    </div>
+    <div id="login-content" class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-500 to-pink-500 hidden">
+        <h1 class="text-white text-5xl font-bold mb-4 shadow-lg" id="title">Halchal&nbsp;Express</h1>
+        <h2 class="text-white text-3xl mb-2 shadow-md">Log In to Your Account</h2>
+        <form class="w-full max-w-sm"  method="POST">
+        
+            <div class="bg-white p-4 rounded-lg shadow-lg mb-4 transition-transform transform hover:scale-105">
+                <label for="user_id" class="block text-sm font-medium text-zinc-700">Username</label>
+                <input type="text" id="user_id" name="user_id" class="mt-1 block w-full px-3 py-2 border border-zinc-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Enter your username" required>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-lg mb-4 transition-transform transform hover:scale-105">
+                <label for="password" class="block text-sm font-medium text-zinc-700">Password</label>
+                <input type="password" id="password" name="password" class="mt-1 block w-full px-3 py-2 border border-zinc-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-500 transition w-full">Log In</button>
+        </form>
+        <a href="#" class="mt-6 text-white underline hover:text-blue-300">Forgot Password?</a>
+    </div>
+    <script>
+        const title = document.getElementById('title');
+        const titleText = title.innerText;
+        title.innerText = '';
+        title.style.whiteSpace = 'nowrap';
+        for (let i = 0; i < titleText.length; i++) {
+            setTimeout(() => {
+                title.innerText += titleText[i];
+            }, i * 200);
+        }
+        // document.querySelector('form').addEventListener('submit', function(event) {
+        //     event.preventDefault();
+        //     alert('Log In functionality not implemented yet.');
+        // });
+        document.querySelector('a').addEventListener('click', function(event) {
+            event.preventDefault();
+            alert('Forgot Password functionality not implemented yet.');
+        });
+        // Dynamic Subtitle Rotation with Smooth Transitions & Get Started Button Animation
+        const subtitles = [
+            "Read Like Never Before",
+            "Stay Updated with the Latest News",
+            "Your Gateway to Information"
+        ];
+        let subtitleIndex = 0;
+        const subtitleElement = document.getElementById('dynamic-subtitle');
+
+        function updateSubtitle() {
+            // Fade out the current subtitle
+            subtitleElement.classList.remove('opacity-100');
+            subtitleElement.classList.add('opacity-0');
+
+            // After the fade-out transition
+            setTimeout(() => {
+                // Update the subtitle text
+                subtitleIndex = (subtitleIndex + 1) % subtitles.length;
+                subtitleElement.textContent = subtitles[subtitleIndex];
+
+                // Fade in the new subtitle
+                subtitleElement.classList.remove('opacity-0');
+                subtitleElement.classList.add('opacity-100');
+            }, 500); // Duration matches the CSS transition duration
+        }
+
+        // Initial interval setup
+        setInterval(updateSubtitle, 2000); // Total interval time (fade out + display)
+
+        // Add Get Started button functionality with slide-out animation
+        document.getElementById('get-started').addEventListener('click', () => {
+            const getStartedBtn = document.getElementById('get-started');
+            getStartedBtn.classList.add('slide-out-right');
+
+            // After the animation duration, hide welcome section and show login content
+            setTimeout(() => {
+                document.getElementById('welcome-section').classList.add('hidden');
+                document.getElementById('login-content').classList.remove('hidden');
+            }, 500); // Match the animation duration (0.5s)
+        });
+    </script>
+</body>
+</html>

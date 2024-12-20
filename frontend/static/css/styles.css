@@ -1,0 +1,52 @@
+/* Import Tailwind CSS Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Gentona font */
+@font-face {
+    font-family: 'Gentona';
+    src: url('../fonts/Gentona.woff2') format('woff2'),
+         url('../fonts/Gentona.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Gradient text effect */
+.gradient-text {
+    background: linear-gradient(90deg, #1E3A8A, #9333EA, #EC4899);
+    background-clip: text;
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent;
+} 
+
+/* Additional Styles for Recommendations Page */
+
+/* Adjust grid gap and padding */
+.news-container {
+    @apply gap-8 px-4;
+}
+
+/* Style for the unordered list */
+.news-container ul {
+    @apply space-y-6 list-none p-0 m-0;
+}
+
+/* Card Description */
+.news-container .news-item p.text-gray-500 {
+    @apply text-sm;
+}
+
+/* Read More Button */
+.news-container a.inline-block {
+    @apply bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-md transition-all duration-300;
+}
+
+.news-container a.inline-block:hover {
+    @apply from-pink-500 to-purple-500;
+}
+
+/* Footer adjustments for spacing */
+footer {
+    @apply mt-12;
+} 
