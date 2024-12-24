@@ -14,7 +14,7 @@ A sophisticated news recommendation system that provides personalized news recom
 
 ## 🎯 Overview
 
-This news recommendation system uses a hybrid approach combining collaborative filtering and content-based recommendations to provide users with personalized news content while ensuring diversity in the recommendations. The system employs BERT embeddings for article representation and implements an innovative diversity-aware reranking algorithm.
+This news recommendation system uses a hybrid approach combining collaborative filtering and content-based recommendations to provide users with personalized news content while ensuring diversity in the recommendations. The system employs Skip-Gram (a word2vec model) embeddings for article representation and implements an innovative diversity-aware reranking algorithm.
 
 ## ✨ Features
 
