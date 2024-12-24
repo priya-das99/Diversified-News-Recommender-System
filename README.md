@@ -1,397 +1,145 @@
-# Diversified-News-Recommender-System
+# Diversified News Recommendation System
 
-# Chapter 3: Challenges and Solutions
+A sophisticated news recommendation system that provides personalized news recommendations while maintaining content diversity and preventing echo chambers.
 
-## 3.1 Data Processing Challenges
+## 📑 Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Technical Architecture](#technical-architecture)
+- [Installation](#installation)
+- [Running Locally](#running-locally)
+- [Project Structure](#project-structure)
+- [Implementation Details](#implementation-details)
+- [Credits](#credits)
 
-### 3.1.1 Data Sparsity
-**Challenge**: The user-item interaction matrix was highly sparse due to:
-- Limited user interaction history
-- New users with no reading history
-- New articles without interactions
+## 🎯 Overview
 
-**Solution**:
-- Implemented hybrid recommendation approach
-- Used content-based filtering for cold-start cases
-- Generated additional recommendations (CF: 20, CB: 2k)
-- Combined scores using weighted approach (α = 0.5)
+This news recommendation system uses a hybrid approach combining collaborative filtering and content-based recommendations to provide users with personalized news content while ensuring diversity in the recommendations. The system employs BERT embeddings for article representation and implements an innovative diversity-aware reranking algorithm.
 
-### 3.1.2 Content Representation
-**Challenge**: News articles varied in:
-- Length and structure
-- Writing style
-- Topic complexity
-- Metadata quality
+## ✨ Features
 
-**Solution**:
-- Utilized BERT embeddings for consistent representation
-- Implemented text preprocessing pipeline
-- Created standardized article features
-- Generated 768-dimensional vectors
+- **Personalized Recommendations**: Uses hybrid recommendation approach (Collaborative + Content-based)
+- **Diversity Enhancement**: Implements diversity-aware reranking algorithm
+- **Cold Start Handling**: Special handling for new users and articles
 
-## 3.2 Technical Challenges
+- **Modern Web Interface**: Responsive UI built with TailwindCSS
+- **Scalable Architecture**: Optimized for handling large datasets
 
-### 3.2.1 Computational Efficiency
-**Challenge**: Performance bottlenecks in:
-- Similarity calculations
-- User profile updates
-- Real-time recommendations
+## 🏗 Technical Architecture
 
-**Solution**:
-```python
-# Implemented FAISS for efficient similarity search
-index = faiss.IndexFlatL2(dimension)
-index.add(embeddings)
-D, I = index.search(query_vector, k)
+### Backend Stack
+- Python 3.8+
+- Flask (Web Framework)
+- NumPy & Pandas (Data Processing)
+- Scikit-learn (Machine Learning)
+- FAISS (Similarity Search)
+- skip-gram (Text Embeddings)
 
-# Vectorized operations
-similarity_matrix = np.dot(user_profiles, article_embeddings.T)
+### Frontend Stack
+- HTML5/CSS3
+- JavaScript
+- TailwindCSS
+- PostCSS
+
+## 📦 Installation
+
+1. **Clone the Repository**
+```bash
+git clone https://github.com/priya-das99/Diversified-News-Recommender-System.git
+cd Diversified-News-Recommender-System
 ```
 
-### 3.2.2 Memory Management
-**Challenge**: High memory usage due to:
-- Large embedding matrices
-- User profile storage
-- Similarity calculations
-
-**Solution**:
-```python
-# Efficient caching strategy
-cache = {
-    'user_profiles': LRUCache(max_size=1000),
-    'article_embeddings': LRUCache(max_size=5000)
-}
-
-# Batch processing
-for batch in np.array_split(data, batch_size):
-    process_batch(batch)
+2. **Set Up Python Environment**
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
-## 3.3 Recommendation Quality Challenges
-
-### 3.3.1 Diversity-Relevance Trade-off
-**Challenge**: Balancing between:
-- Recommendation accuracy
-- Content diversity
-- User satisfaction
-
-**Solution**:
-```python
-# Diversity-aware reranking
-def diversity_score(candidate, selected):
-    return 1 - max([
-        cosine_similarity(candidate, item)
-        for item in selected
-    ])
-
-# Combined scoring
-final_score = lambda_div * diversity_score + (1 - lambda_div) * relevance_score
+3. **Install Node.js Dependencies**
+```bash
+npm install
 ```
 
-### 3.3.2 Cold Start Problem
-**Challenge**: Handling:
-- New users without history
-- New articles without interactions
-- Limited initial data
-
-**Solution**:
-```python
-# Hybrid approach for new users
-if user.is_new:
-    recommendations = content_based_recommendations(user_profile)
-else:
-    recommendations = hybrid_recommendations(user_id)
+4. **Build CSS**
+```bash
+npm run build:css
 ```
 
-## 3.4 System Integration Challenges
+## 🚀 Running Locally
 
-### 3.4.1 Pipeline Complexity
-**Challenge**: Managing:
-- Multiple recommendation components
-- Data flow between modules
-- Error handling
-- System state
-
-**Solution**:
-```python
-class RecommendationPipeline:
-    def __init__(self):
-        self.cf_recommender = CollaborativeFilter()
-        self.cb_recommender = ContentBasedFilter()
-        self.diversity_reranker = DiversityReranker()
-
-    def get_recommendations(self, user_id):
-        try:
-            cf_recs = self.cf_recommender.recommend(user_id, k=20)
-            cb_recs = self.cb_recommender.recommend(user_id, k=2*target_size)
-            hybrid_recs = self.combine_recommendations(cf_recs, cb_recs)
-            return self.diversity_reranker.rerank(hybrid_recs)
-        except Exception as e:
-            self.handle_error(e)
+1. **Start the Flask Backend**
+```bash
+python backend/app.py
 ```
 
-### 3.4.2 Real-time Processing
-**Challenge**: Maintaining:
-- Response time requirements
-- Data consistency
-- System responsiveness
-
-**Solution**:
-```python
-# Asynchronous updates
-async def update_user_profile(user_id, interaction):
-    profile = await get_user_profile(user_id)
-    updated = await update_profile_async(profile, interaction)
-    await cache.set(f"profile_{user_id}", updated)
+2. **Watch CSS Changes (Development)**
+```bash
+npm run watch:css
 ```
 
-## 3.5 Evaluation Challenges
+3. Access the application at `http://localhost:5000`
 
-### 3.5.1 Metric Selection
-**Challenge**: Identifying:
-- Appropriate evaluation metrics
-- Performance indicators
-- Quality measures
+## 📁 Project Structure
 
-**Solution**:
-```python
-def evaluate_recommendations(predictions, ground_truth):
-    metrics = {
-        'precision': calculate_precision(predictions, ground_truth),
-        'recall': calculate_recall(predictions, ground_truth),
-        'ndcg': calculate_ndcg(predictions, ground_truth),
-        'diversity': calculate_ild(predictions)
-    }
-    return metrics
+```
+project/
+├── backend/               # Server-side code
+│   ├── app.py            # Flask application and routes
+│   ├── database.py       # Database and data loading functions
+│   ├── collaborative.py  # Collaborative filtering algorithm
+│   ├── content_based.py  # Content-based filtering
+│   ├── diversity_ReRank.py # Diversity reranking algorithm
+│   ├── hybrid.py         # Hybrid recommendation system
+│   └── utils.py          # Utility functions
+├── data/                 # Dataset and processing scripts
+├── frontend/            
+│   ├── static/          # Static assets
+│   │   ├── css/         # Stylesheets
+│   │   └── js/          # JavaScript files
+│   ├── templates/       # HTML templates
+│   ├── package.json     # Frontend dependencies
+│   └── postcss.config.js # PostCSS configuration
+├── package.json         # Project dependencies
+└── requirements.txt     # Python dependencies
 ```
 
-### 3.5.2 Testing Framework
-**Challenge**: Implementing:
-- Comprehensive testing
-- Performance monitoring
-- Quality assurance
+## 🛠 Implementation Details
 
-**Solution**:
-```python
-class TestFramework:
-    def test_recommendation_quality(self):
-        # Test accuracy
-        self.assert_minimum_precision(0.7)
-        
-        # Test diversity
-        self.assert_minimum_diversity(0.3)
-        
-        # Test response time
-        self.assert_maximum_latency(200)  # ms
-```
+### Recommendation System Components
 
-## 3.6 Future Challenges
+1. **Collaborative Filtering** (`collaborative.py`)
+   - User-based similarity calculations
+   - Item-based similarity calculations 
+   - Similar user identification using cosine similarity  using FAISS for faster search 
 
-### 3.6.1 Scalability
-**Challenge**: Preparing for:
-- Growing user base
-- Increasing content volume
-- Higher request load
+2. **Content-Based Filtering** (`content_based.py`)
+   - Skip-gram embeddings for article representation
+   - Article similarity calculations
+   - Similar article recommendation
 
-**Solution**:
-- Implemented horizontal scaling
-- Optimized database queries
-- Added load balancing
+3. **Diversity Enhancement** (`diversity_ReRank.py`)
+   - Diversity-aware reranking algorithm
+   - Category coverage optimization
+   - Echo chamber prevention
 
-### 3.6.2 System Evolution
-**Challenge**: Planning for:
-- New features
-- Algorithm improvements
-- Infrastructure updates
+4. **Hybrid Recommendations** (`hybrid.py`)
+   - Combines collaborative and content-based approaches
+   - Weighted score aggregation
+   - Adaptive recommendation strategy
 
-**Solution**:
-- Created extensible architecture
-- Documented system thoroughly
-- Established update procedures
+## 👥 Credits
 
-# Chapter 4: Methodology
+This project was developed as part of a minor project by:
 
-## 4.1 System Architecture
+**Team Members:**
 
-### 4.1.1 Overview
-The system implements a hybrid recommendation approach combining:
-- Collaborative Filtering (CF)
-- Content-Based Filtering (CB)
-- Diversity-Aware Reranking
+- [Priya Das](https://github.com/priya-das99) - Research and implementation(Code Integration)
+- [Subrojyoti Paul](https://github.com/Subrojyoti) - Algorithm Design and implementation
 
-### 4.1.2 Data Processing Pipeline
-1. **News Article Processing**
-   ```python
-   def process_article(article):
-       # Text preprocessing
-       cleaned_text = preprocess_text(article.content)
-       
-       # Generate BERT embedding
-       embedding = bert_model.encode(cleaned_text)
-       
-       return embedding
-   ```
 
-2. **User Profile Creation**
-   ```python
-   def create_user_profile(user_history):
-       # Aggregate article embeddings
-       article_embeddings = [get_article_embedding(id) for id in user_history]
-       return np.mean(article_embeddings, axis=0)
-   ```
+**Supervisors:**
+- [Dr. Tribikram Pradhan - Project Guide]
+- [Computer science and Engineering] - [Tezpur University]
 
-## 4.2 Recommendation Components
 
-### 4.2.1 Collaborative Filtering
-**Implementation**:
-```python
-def collaborative_recommendations(user_id, n_recommendations=20):
-    # Find similar users
-    similar_users = find_similar_users(user_id)
-    
-    # Get recommendations from similar users
-    recommendations = []
-    for similar_user, similarity in similar_users:
-        user_articles = get_user_articles(similar_user)
-        scored_articles = [(article, similarity * score) 
-                          for article, score in user_articles]
-        recommendations.extend(scored_articles)
-    
-    return get_top_n(recommendations, n_recommendations)
-```
-
-### 4.2.2 Content-Based Filtering
-**Implementation**:
-```python
-def content_based_recommendations(user_profile, n_recommendations):
-    # Calculate similarity with all articles
-    similarities = cosine_similarity(user_profile, article_embeddings)
-    
-    # Get top articles
-    top_indices = np.argsort(similarities)[-n_recommendations:]
-    return [(article_ids[idx], similarities[idx]) for idx in top_indices]
-```
-
-### 4.2.3 Hybrid Integration
-**Implementation**:
-```python
-def hybrid_recommendations(user_id, target_size=10):
-    # Get recommendations from both approaches
-    cf_recs = collaborative_recommendations(user_id, k=20)
-    cb_recs = content_based_recommendations(user_id, k=target_size*2)
-    
-    # Combine scores
-    combined_scores = {}
-    alpha = 0.5  # Weight parameter
-    
-    for article_id, cf_score in cf_recs:
-        combined_scores[article_id] = alpha * cf_score
-    
-    for article_id, cb_score in cb_recs:
-        current_score = combined_scores.get(article_id, 0)
-        combined_scores[article_id] = current_score + (1-alpha) * cb_score
-    
-    return sorted(combined_scores.items(), key=lambda x: x[1], reverse=True)
-```
-
-## 4.3 Diversity Enhancement
-
-### 4.3.1 Diversity Measurement
-**Implementation**:
-```python
-def calculate_diversity(candidate, selected_articles):
-    if not selected_articles:
-        return 1.0
-    
-    similarities = [
-        cosine_similarity(candidate, article)
-        for article in selected_articles
-    ]
-    return 1 - max(similarities)
-```
-
-### 4.3.2 Reranking Algorithm
-**Implementation**:
-```python
-def diversity_rerank(recommendations, target_size=10, lambda_div=1.0):
-    selected = []
-    candidates = recommendations.copy()
-    
-    while len(selected) < target_size and candidates:
-        # Calculate scores for remaining candidates
-        scores = []
-        for candidate in candidates:
-            diversity = calculate_diversity(candidate, selected)
-            relevance = candidate.score
-            final_score = lambda_div * diversity + (1-lambda_div) * relevance
-            scores.append(final_score)
-        
-        # Select best candidate
-        best_idx = np.argmax(scores)
-        selected.append(candidates.pop(best_idx))
-    
-    return selected
-```
-
-## 4.4 Cold-Start Handling
-
-### 4.4.1 New Articles
-```python
-def handle_new_article(article):
-    # Content-based approach for new articles
-    embedding = generate_embedding(article)
-    similar_articles = find_similar_existing_articles(embedding)
-    return initialize_article_scores(similar_articles)
-```
-
-### 4.4.2 New Users
-```python
-def handle_new_user(user):
-    # Start with popular and diverse articles
-    recommendations = get_diverse_popular_articles()
-    
-    # Update as user interacts
-    user_profile = initialize_user_profile(user)
-    return recommendations
-```
-
-## 4.5 System Integration
-
-### 4.5.1 Recommendation Pipeline
-```python
-class RecommendationSystem:
-    def get_recommendations(self, user_id, count=10):
-        # Generate base recommendations
-        hybrid_recs = self.hybrid_recommendations(user_id)
-        
-        # Apply diversity reranking
-        diverse_recs = self.diversity_rerank(hybrid_recs, count)
-        
-        # Handle cold-start if necessary
-        if self.is_new_user(user_id):
-            diverse_recs = self.handle_new_user_recs(diverse_recs)
-        
-        return diverse_recs
-```
-
-### 4.5.2 Performance Optimization
-- Caching of embeddings and user profiles
-- Batch processing for recommendations
-- Asynchronous updates for user profiles
-
-## 4.6 Evaluation Framework
-
-### 4.6.1 Metrics
-```python
-def evaluate_recommendations(predictions, ground_truth):
-    return {
-        'precision': calculate_precision(predictions, ground_truth),
-        'diversity': calculate_diversity_score(predictions),
-        'coverage': calculate_category_coverage(predictions)
-    }
-```
-
-### 4.6.2 Online Learning
-- Continuous monitoring of user interactions
-- Regular model updates
-- A/B testing for parameter tuning
