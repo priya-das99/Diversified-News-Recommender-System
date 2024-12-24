@@ -3,14 +3,14 @@
 A sophisticated news recommendation system that provides personalized news recommendations while maintaining content diversity and preventing echo chambers.
 
 ## 📑 Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Technical Architecture](#technical-architecture)
-- [Installation](#installation)
-- [Running Locally](#running-locally)
-- [Project Structure](#project-structure)
-- [Implementation Details](#implementation-details)
-- [Credits](#credits)
+- [Overview](#-overview)
+- [Features](#-features)
+- [Technical Architecture](#-technical-architecture)
+- [Installation](#-installation)
+- [Running Locally](#-running-locally)
+- [Project Structure](#-project-structure)
+- [Implementation Details](#-implementation-details)
+- [Credits](#-credits)
 
 ## 🎯 Overview
 
