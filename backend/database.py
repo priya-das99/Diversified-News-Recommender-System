@@ -2,7 +2,7 @@ import pandas as pd
 import pickle
 import json
 from collections import Counter
-from hybrid import hybrid_recommendations
+from .hybrid import hybrid_recommendations
 import logging
 
 # Configure logging

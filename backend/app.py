@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from database import get_trending_news, get_recommended_news, authenticate_user, get_news_by_id, track_news_click
+from .database import get_trending_news, get_recommended_news, authenticate_user, get_news_by_id, track_news_click
 import os
 from datetime import timedelta
 

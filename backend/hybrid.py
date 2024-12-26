@@ -3,9 +3,9 @@ import numpy as np
 import pickle
 # from tqdm import tqdm
 # import faiss
-from content_based import content_based_recommendations
-from collaborative import collaborative_recommendations
-from diversity_ReRank import diversity_re_rank
+from .content_based import content_based_recommendations
+from .collaborative import collaborative_recommendations
+from .diversity_ReRank import diversity_re_rank
 import numpy as np
 import pickle
 from tqdm import tqdm
