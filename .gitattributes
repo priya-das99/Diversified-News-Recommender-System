@@ -1,2 +1,5 @@
 *.csv filter=lfs diff=lfs merge=lfs -text
 *.pkl filter=lfs diff=lfs merge=lfs -text
+data/behaviour_data.csv filter=lfs diff=lfs merge=lfs -text
+data/processed_data/news_embeddings.pkl filter=lfs diff=lfs merge=lfs -text
+data/processed_data/user_profile.pkl filter=lfs diff=lfs merge=lfs -text
